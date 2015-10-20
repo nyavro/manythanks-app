@@ -2,7 +2,7 @@
 android.Plugin.androidBuild
 
 // Specifying the Android target Sdk version
-platformTarget in Android := "android-21"
+platformTarget in Android := "android-23"
 
 // Application Name
 name := """manythanks-app"""
@@ -21,12 +21,14 @@ resolvers ++= Seq(Resolver.mavenLocal,
   Resolver.typesafeIvyRepo("snapshots"),
   Resolver.sonatypeRepo("releases"),
   Resolver.sonatypeRepo("snapshots"),
-  Resolver.defaultLocal)
+  Resolver.defaultLocal
+)
 
 libraryDependencies ++= Seq(
   "org.scaloid" %% "scaloid" % "4.0-RC1" withSources() withJavadoc(),
-//  "com.propensive" %% "rapture-json" % "1.1.0" withSources() withJavadoc(),
   "com.google.android.gms" % "play-services" % "8.+",
+  "com.android.support" % "appcompat-v7" % "+",
+  "com.android.support" % "support-v4" % "23.0.1",
   "org.apache.commons" % "commons-io" % "1.3.2"
 )
 

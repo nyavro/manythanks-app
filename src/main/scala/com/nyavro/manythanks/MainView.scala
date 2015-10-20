@@ -5,9 +5,6 @@ import android.util.Log
 import com.google.android.gms.common.{ConnectionResult, GoogleApiAvailability}
 import org.scaloid.common._
 
-/**
- * Created by eny on 06.10.15.
- */
 class MainView extends SActivity {
 
   val PlayServicesResolutionRequest = 9000
