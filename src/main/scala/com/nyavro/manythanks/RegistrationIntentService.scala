@@ -1,15 +1,13 @@
 package com.nyavro.manythanks
 
-import java.io.IOException
-
 import android.app.IntentService
 import android.content.Intent
 import android.preference.PreferenceManager
+import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import com.google.android.gms.gcm.{GcmPubSub, GoogleCloudMessaging}
 import com.google.android.gms.iid.InstanceID
 import org.scaloid.common.Preferences
-import android.support.v4.content.LocalBroadcastManager
 
 class RegistrationIntentService extends IntentService(RegistrationIntentService.Tag) {
 

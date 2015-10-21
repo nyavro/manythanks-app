@@ -56,6 +56,6 @@
 			android:protectionLevel="signature" />
 	<uses-permission android:name="com.nyvro.manythanks.permission.C2D_MESSAGE" />
 	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	android.permission.INTERNET
+	<uses-permission android:name="android.permission.WAKE_LOCK"/>
+	<uses-permission android:name="android.permission.SEND_SMS"/>
 </manifest> 

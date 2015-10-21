@@ -1,8 +1,11 @@
 package com.nyavro.manythanks
 
 import android.content.{Intent, Context, BroadcastReceiver}
+import android.net.Uri
+import android.telephony.SmsManager
 import android.util.Log
 import com.google.android.gms.common.{ConnectionResult, GoogleApiAvailability}
+import com.nyavro.manythanks.telephony.GsmInfo
 import org.scaloid.common._
 
 class MainView extends SActivity {
@@ -21,6 +24,9 @@ class MainView extends SActivity {
     }
   }
   lazy val send = new SButton
+  lazy val sendSms = new SButton
+
+  lazy val number = new SEditText
 
   onCreate {
     message.setText("{empty}")
@@ -31,8 +37,17 @@ class MainView extends SActivity {
         startService(new Intent(this, classOf[RegistrationIntentService]))
       }
     }
-    setContentView(new SVerticalLayout += message += send)
+
+    sendSms.setText("Send sms")
+    sendSms.onClick {
+      sendSms(number.getText.toString, "testtest")
+    }
+
+    setContentView(new SVerticalLayout += message += send += number += sendSms)
   }
+
+  private def sendSms(phone:String, message:String) =
+    SmsManager.getDefault.sendTextMessage(phone, null, message, null, null)
 
   def isPlayServicesAvailable = {
     val availability = GoogleApiAvailability.getInstance()

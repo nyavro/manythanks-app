@@ -24,12 +24,17 @@ resolvers ++= Seq(Resolver.mavenLocal,
   Resolver.defaultLocal
 )
 
+val ScalatestVersion = "3.0.0-M7"
+val ScalamockVersion = "3.2.2"
+
 libraryDependencies ++= Seq(
   "org.scaloid" %% "scaloid" % "4.0-RC1" withSources() withJavadoc(),
   "com.google.android.gms" % "play-services" % "8.+",
   "com.android.support" % "appcompat-v7" % "+",
   "com.android.support" % "support-v4" % "23.0.1",
-  "org.apache.commons" % "commons-io" % "1.3.2"
+  "org.apache.commons" % "commons-io" % "1.3.2",
+  "org.scalatest"      % "scalatest_2.11"                            % ScalatestVersion  % "test",
+  "org.scalamock"      % "scalamock-scalatest-support_2.11"          % ScalamockVersion % "test"
 )
 
 // Override the run task with the android:run
