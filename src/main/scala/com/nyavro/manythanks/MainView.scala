@@ -1,16 +1,14 @@
 package com.nyavro.manythanks
 
-import android.content.{Intent, Context, BroadcastReceiver}
-import android.net.Uri
+import android.content.{BroadcastReceiver, Context, Intent}
 import android.telephony.SmsManager
 import android.util.Log
-import com.google.android.gms.common.{ConnectionResult, GoogleApiAvailability}
-import com.nyavro.manythanks.telephony.GsmInfo
+import com.eny.smallpoll.view.QuestionView
+import com.nyavro.manythanks.register.{RequestPhoneActivity, Registration}
 import org.scaloid.common._
 
 class MainView extends SActivity {
 
-  val PlayServicesResolutionRequest = 9000
   val Tag = "MainActivity"
 
   lazy val message = new STextView
@@ -27,41 +25,26 @@ class MainView extends SActivity {
   lazy val sendSms = new SButton
 
   lazy val number = new SEditText
+  lazy val register = new SButton
 
   onCreate {
     message.setText("{empty}")
     send.setText("Send")
     send.onClick {
-      if (isPlayServicesAvailable) {
-        message.setText("sent request")
-        startService(new Intent(this, classOf[RegistrationIntentService]))
-      }
     }
 
     sendSms.setText("Send sms")
     sendSms.onClick {
-      sendSms(number.getText.toString, "testtest")
+      val intent = new Intent(MainView.this, classOf[RequestPhoneActivity])
+      startActivity(intent)
     }
 
-    setContentView(new SVerticalLayout += message += send += number += sendSms)
+    register.setText("Register")
+    register.onClick {
+      new Registration(preferences).check()
+    }
+
+    setContentView(new SVerticalLayout += message += send += number += sendSms += register)
   }
 
-  private def sendSms(phone:String, message:String) =
-    SmsManager.getDefault.sendTextMessage(phone, null, message, null, null)
-
-  def isPlayServicesAvailable = {
-    val availability = GoogleApiAvailability.getInstance()
-    val result = availability.isGooglePlayServicesAvailable(this)
-    if(result!=ConnectionResult.SUCCESS) {
-      if(availability.isUserResolvableError(result)) {
-        availability.getErrorDialog(this, result, PlayServicesResolutionRequest).show()
-      } else {
-        Log.i(Tag, "This device is not supported")
-      }
-      false
-    }
-    else {
-      true
-    }
-  }
 }

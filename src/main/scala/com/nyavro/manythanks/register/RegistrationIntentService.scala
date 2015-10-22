@@ -1,4 +1,4 @@
-package com.nyavro.manythanks
+package com.nyavro.manythanks.register
 
 import android.app.IntentService
 import android.content.Intent
@@ -7,10 +7,12 @@ import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import com.google.android.gms.gcm.{GcmPubSub, GoogleCloudMessaging}
 import com.google.android.gms.iid.InstanceID
+import com.nyavro.manythanks.R
 import org.scaloid.common.Preferences
 
 class RegistrationIntentService extends IntentService(RegistrationIntentService.Tag) {
 
+  val preferences = new Preferences(PreferenceManager.getDefaultSharedPreferences(this))
   /**
    * Server API Key help
 AIzaSyDVV5tut_3_WCfBR4HgoQmcH-zN2_QIlrE
@@ -20,33 +22,29 @@ Sender ID help
    */
 
   override def onHandleIntent(intent: Intent): Unit = {
-    val preferences = new Preferences(PreferenceManager.getDefaultSharedPreferences(this))
+    val phone = intent.getStringExtra(Registration.PhoneExtra)
+
     try {
       val instanceID = InstanceID.getInstance(this)
       val token = instanceID.getToken(getString(R.string.gcm_defaultSenderId), GoogleCloudMessaging.INSTANCE_ID_SCOPE, null)
       Log.i(RegistrationIntentService.Tag, "GCM Registration Token: " + token)
-      sendRegistrationToServer(token)
+      sendRegistrationToServer(token, phone)
       subscribeTopics(token)
-      preferences.sentTokenToServer = true
+      preferences.gcmRegistered = true
     }
     catch {
       case e: Exception =>
         Log.d(RegistrationIntentService.Tag, "Failed to complete token refresh", e)
-        preferences.sentTokenToServer = false
+        preferences.gcmRegistered = false
     }
     val registrationComplete = new Intent(RegistrationIntentService.RegistrationComplete)
     LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete)
   }
 
-  /**
-   * Persist registration to third-party servers.
-   *
-   * Modify this method to associate the user's GCM registration token with any server-side account
-   * maintained by your application.
-   *
-   * @param token The new token.
-   */
-  private def sendRegistrationToServer(token: String) {
+  private def sendRegistrationToServer(gcmToken: String, phone:String) = {
+    val securityToken = registration.signUp(gcmToken, phone)
+    preferences.securityToken = securityToken
+    preferences.isRegistered = true
   }
 
   /**
