@@ -23,11 +23,11 @@
 				<category android:name="com.nyavro.manythanks" />
 			</intent-filter>
 		</receiver>
-		<receiver android:name=".register.SmsRegistrationReciever">
-			<intent-filter>
-				<action android:name="android.provider.Telephony.SMS_RECEIVED" />
-			</intent-filter>
-		</receiver>
+		<!--<receiver android:name=".register.SmsRegistrationReciever">-->
+			<!--<intent-filter>-->
+				<!--<action android:name="android.provider.Telephony.SMS_RECEIVED" />-->
+			<!--</intent-filter>-->
+		<!--</receiver>-->
 		<!-- [END gcm_receiver] -->
 
 		<!-- [START gcm_listener] -->

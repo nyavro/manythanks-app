@@ -9,7 +9,7 @@ class SmsRegistrationReciever extends BroadcastReceiver {
     val pdus=intent.getExtras.get("pdus").asInstanceOf[Array[Object]]
     val message=SmsMessage.createFromPdu(pdus(0).asInstanceOf[Array[Byte]])
     if(message.getMessageBody.startsWith("test")) {
-      abortBroadcast
+      abortBroadcast()
     }
     Log.d("SMSReceiver","SMS message sender: " + message.getOriginatingAddress)
     Log.d("SMSReceiver","SMS message text: " + message.getDisplayMessageBody)
