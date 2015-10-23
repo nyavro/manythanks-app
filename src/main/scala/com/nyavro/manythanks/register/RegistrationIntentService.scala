@@ -42,8 +42,8 @@ Sender ID help
   }
 
   private def sendRegistrationToServer(gcmToken: String, phone:String) = {
-    val securityToken = registration.signUp(gcmToken, phone)
-    preferences.securityToken = securityToken
+//    val securityToken = registration.signUp(gcmToken, phone)
+//    preferences.securityToken = securityToken
     preferences.isRegistered = true
   }
 

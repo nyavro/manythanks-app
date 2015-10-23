@@ -1,10 +1,7 @@
 package com.nyavro.manythanks
 
 import android.content.{BroadcastReceiver, Context, Intent}
-import android.telephony.SmsManager
-import android.util.Log
-import com.eny.smallpoll.view.QuestionView
-import com.nyavro.manythanks.register.{RequestPhoneActivity, Registration}
+import com.nyavro.manythanks.register.{Registration, RequestPhoneActivity}
 import org.scaloid.common._
 
 class MainView extends SActivity {

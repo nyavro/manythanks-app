@@ -15,6 +15,9 @@ class Registration(preferences:Preferences)(implicit ctx:Context) {
   val GoogleServiceConnectionUnresolvableFailure = "GoogleServiceConnectionUnresolvableFailure"
   val RegistrationTag = "Registration"
 
+  def check() = {
+  }
+
 //  def check() =
 //    if(preferences.isRegistered(false)) {
 //      //Ok

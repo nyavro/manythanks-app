@@ -29,6 +29,6 @@ class Alert(title:String, message:Option[String])(implicit ctx:Context) {
 
 object Alert {
   def apply(titleId:Int, messageId:Option[Int] = None)(implicit ctx:Context):Alert = Alert(ctx.getString(titleId), messageId.map(ctx.getString))
-  def apply(title:String, message:Option[String] = None)(implicit ctx:Context):Alert = new Alert(title, message)
+  def apply(title:String, message:Option[String])(implicit ctx:Context):Alert = new Alert(title, message)
 }
 
