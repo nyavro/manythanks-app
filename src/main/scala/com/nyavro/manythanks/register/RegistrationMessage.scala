@@ -4,7 +4,7 @@ class RegistrationMessage(phone:String, registrationId:Long) {
 
   val prefix = "Registration"
 
-  def value = s"$prefix:$phone:${new NarrowedSpace(phone.hashCode + (registrationId%1000000).toInt).value}"
+  def value = s"$prefix:$phone:${new NarrowedSpace(phone.hashCode + ((registrationId%1000)*1001).toInt).value}"
 
   def fit(message:String) = value.equals(message)
 }

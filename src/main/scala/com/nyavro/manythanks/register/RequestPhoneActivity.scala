@@ -1,12 +1,12 @@
 package com.nyavro.manythanks.register
 
 import java.util.concurrent.TimeUnit
-import java.util.{Date, TimerTask, Timer}
+import java.util.{Date, Timer, TimerTask}
 
 import android.content._
 import android.os.Handler
 import android.preference.PreferenceManager
-import android.telephony.{SmsMessage, PhoneNumberUtils, SmsManager}
+import android.telephony.{SmsManager, SmsMessage}
 import android.text.{Editable, TextWatcher}
 import android.util.Log
 import com.nyavro.components.Alert
@@ -54,6 +54,7 @@ class RequestPhoneActivity extends SActivity {
     preferences.registrationId = registrationId
     val filter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED")
     registerReceiver(smsReceiver, filter)
+    //TODO:Start blocking spinner
     sendSms(phone, new RegistrationMessage(phone, registrationId).value)
     val handler = new Handler
     val smsReceiveStop = new Timer
@@ -100,6 +101,8 @@ class SmsRegistrationReceiver extends BroadcastReceiver {
         Log.d(Tag, "OriginatingAddress: " + message.getOriginatingAddress)
         Log.d(Tag, "Registered phone: " + phone)
         preferences.phone = phone
+        //TODO:Stop blocking spinner
+        context.startService(new Intent(context, classOf[RegistrationIntentService]))
       }
     }
     Log.d(Tag, "SMS message text: " + message.getDisplayMessageBody)

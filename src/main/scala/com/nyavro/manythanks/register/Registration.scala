@@ -1,12 +1,33 @@
 package com.nyavro.manythanks.register
 
-import java.util.concurrent.TimeUnit
-
 import android.content.{Context, Intent}
+import android.util.Log
+import com.github.kevinsawicki.http.HttpRequest
 import com.google.android.gms.common.{ConnectionResult, GoogleApiAvailability}
 import org.scaloid.common.Preferences
+import spray.json._
 
-class Registration(preferences:Preferences)(implicit ctx:Context) {
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+import scala.util.{Failure, Success, Try}
+
+case class UserToken(userId:Long, token:String)
+
+class Registration(preferences:Preferences)(implicit ctx:Context) extends DefaultJsonProtocol {
+
+  def register(gcmToken: String, phone:String) = Future {
+    parse(
+      HttpRequest
+        .post("http://192.168.0.17:9000/v1/auth/signUp")
+        .header("Content-Type", "application/json")
+        .send(s"""{"login":"$phone","password":"$gcmToken","extId":"$phone"}""".getBytes)
+        .body
+    ).map {
+      userToken =>
+        preferences.token = userToken.token
+        preferences.userId = userToken.userId
+    }
+  }
 
   val GCMToken = "GCM_Token"
   val Tag = "Registration"
@@ -18,25 +39,17 @@ class Registration(preferences:Preferences)(implicit ctx:Context) {
   def check() = {
   }
 
-//  def check() =
-//    if(preferences.isRegistered(false)) {
-//      //Ok
-//    }
-//    else {
-//      val phone = requestUserPhone()
-//      val phoneHash = hash(phone)
-//      val message = s"$RegistrationTag:$phone:$hash"
-//      sendSms(message)
-//      recieveSms()
-//      unregisterAfter(TimeUnit.MINUTES.toMillis(5))
-//    }
+  implicit val itsJsonFormat = jsonFormat[Long, String, UserToken](
+    UserToken.apply, "userId", "token"
+  )
 
-//
-//  def proceedRegister(phone:String, code:Long) = {
-//    if (hash(phone).equals(code)) {
-//      getGcmRegistration(phone)
-//    }
-//  }
+  def parse(response:String):Option[UserToken] =
+    Try{
+      response.parseJson.convertTo[UserToken]
+    } match {
+      case Success(x) => Some(x)
+      case Failure(x) => Log.e("Registration", x.getLocalizedMessage); None
+    }
 
   def getGcmRegistration(phone:String) = {
     if(!isPlayServicesAvailable.isDefined) {

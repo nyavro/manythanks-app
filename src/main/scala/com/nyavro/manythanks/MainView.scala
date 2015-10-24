@@ -32,15 +32,15 @@ class MainView extends SActivity {
 
     sendSms.setText("Send sms")
     sendSms.onClick {
-      val intent = new Intent(MainView.this, classOf[RequestPhoneActivity])
-      startActivity(intent)
+//      val intent = new Intent(MainView.this, classOf[RequestPhoneActivity])
+//      startActivity(intent)
     }
 
     register.setText("Register")
     register.onClick {
-      new Registration(preferences).check()
+      new Registration(preferences).register("gcm_dummy_token", preferences.phone(""))
     }
-
+    number.setText(preferences.phone(""))
     setContentView(new SVerticalLayout += message += send += number += sendSms += register)
   }
 

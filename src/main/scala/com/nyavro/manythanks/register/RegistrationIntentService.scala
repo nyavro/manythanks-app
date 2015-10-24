@@ -22,8 +22,7 @@ Sender ID help
    */
 
   override def onHandleIntent(intent: Intent): Unit = {
-    val phone = intent.getStringExtra(Registration.PhoneExtra)
-
+    val phone = preferences.phone("")
     try {
       val instanceID = InstanceID.getInstance(this)
       val token = instanceID.getToken(getString(R.string.gcm_defaultSenderId), GoogleCloudMessaging.INSTANCE_ID_SCOPE, null)
@@ -42,15 +41,13 @@ Sender ID help
   }
 
   private def sendRegistrationToServer(gcmToken: String, phone:String) = {
-//    val securityToken = registration.signUp(gcmToken, phone)
-//    preferences.securityToken = securityToken
-    preferences.isRegistered = true
+    new Registration(preferences)(this).register(gcmToken, phone)
   }
 
   /**
    * Subscribe to any GCM topics of interest, as defined by the TOPICS constant.
    */
-  private def subscribeTopics(token: String) {
+  private def subscribeTopics(token: String) = {
     val pubSub = GcmPubSub.getInstance(this)
     RegistrationIntentService.Topics.foreach {
       topic => pubSub.subscribe(token, "/topics/" + topic, null)
