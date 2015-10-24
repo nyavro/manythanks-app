@@ -30,13 +30,7 @@ class Registration(preferences:Preferences)(implicit ctx:Context) {
 //      recieveSms()
 //      unregisterAfter(TimeUnit.MINUTES.toMillis(5))
 //    }
-//
-//  def onSms(message:String) = {
-//    val confirmation = s"$RegistrationTag:(.+):(\\d+)"r
-//    message match {
-//      case confirmation(phone, code) => proceedRegister(phone, code.toLong)
-//    }
-//  }
+
 //
 //  def proceedRegister(phone:String, code:Long) = {
 //    if (hash(phone).equals(code)) {
