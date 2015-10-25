@@ -6,20 +6,20 @@ import android.content.{Context, DialogInterface}
 import com.nyavro.manythanks.R
 
 class Alert(title:String, message:Option[String])(implicit ctx:Context) {
-  def run(onApprove: ()=>Unit, onDecline: ()=>Unit = () => {}) = {
+  def run(onApprove: =>Unit, onDecline: =>Unit = {}) = {
     message.map(msg => new Builder(ctx).setMessage(msg)).getOrElse(new Builder(ctx))
       .setIcon(android.R.drawable.alert_light_frame)
       .setTitle(title)
       .setPositiveButton(
         R.string.dialog_ok,
         new OnClickListener() {
-          override def onClick(dialog: DialogInterface, whichButton: Int) = onApprove()
+          override def onClick(dialog: DialogInterface, whichButton: Int) = onApprove
         }
       )
       .setNegativeButton(
         R.string.dialog_cancel,
         new OnClickListener {
-          override def onClick(dialog: DialogInterface, whichButton: Int) = onDecline()
+          override def onClick(dialog: DialogInterface, whichButton: Int) = onDecline
         }
       )
       .create()

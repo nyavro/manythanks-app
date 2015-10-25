@@ -35,6 +35,9 @@ libraryDependencies ++= Seq(
   "org.apache.commons" % "commons-io" % "1.3.2",
   "com.github.kevinsawicki" % "http-request" % "6.0",
   "io.spray" % "spray-json_2.11" % "1.3.2",
+  "com.netflix.rxjava" % "rxjava-core" % "latest.integration",
+  "com.netflix.rxjava" % "rxjava-scala" % "latest.integration" intransitive(),
+  "com.netflix.rxjava" % "rxjava-android" % "latest.integration" intransitive(),
   "org.scalatest"      % "scalatest_2.11"                            % ScalatestVersion  % "test",
   "org.scalamock"      % "scalamock-scalatest-support_2.11"          % ScalamockVersion % "test"
 )

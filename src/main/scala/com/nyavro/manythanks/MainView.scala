@@ -30,10 +30,11 @@ class MainView extends SActivity {
     send.onClick {
     }
 
-    sendSms.setText("Send sms")
+    sendSms.setText("Full sms registration")
     sendSms.onClick {
-//      val intent = new Intent(MainView.this, classOf[RequestPhoneActivity])
-//      startActivity(intent)
+      if(!preferences.isRegistered(false)) {
+        startActivity(new Intent(MainView.this, classOf[RequestPhoneActivity]))
+      }
     }
 
     register.setText("Register")

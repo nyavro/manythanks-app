@@ -14,6 +14,7 @@ import com.nyavro.manythanks.R
 import org.scaloid.common._
 
 class RequestPhoneActivity extends SActivity {
+
   val Tag = "RequestPhoneActivity"
 
   lazy val paymentNotification = new STextView
@@ -41,8 +42,7 @@ class RequestPhoneActivity extends SActivity {
     ok.onClick {
       Alert(getString(R.string.phone_valid_alert_title),
         Some(s"${getString(R.string.check_your_phone)}\n${number.getText.toString}")).run(
-        () => register(number.getText.toString),
-        () => {}
+        register(number.getText.toString)
       )
     }
     setContentView(new SVerticalLayout += paymentNotification += enterPhone += number += ok)
