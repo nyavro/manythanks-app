@@ -41,7 +41,7 @@ Sender ID help
   }
 
   private def sendRegistrationToServer(gcmToken: String, phone:String) = {
-    new Registration(preferences)(this).register(gcmToken, phone)
+    new BackendRegistration(preferences)(this).register(gcmToken, phone)
   }
 
   /**

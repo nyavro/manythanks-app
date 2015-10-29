@@ -105,7 +105,7 @@
     <string name="background_video_path">Устанавливает видео фон</string>
     <string name="background_video_path_summary">Устанавливает видео в качестве фона</string>
     <string name="settings">Настройки</string>
-    <string name="clean">Очистить</string>
-    <string name="file_to_import">Выбрать файл для импорта</string>
-    <string name="folder_to_export">Выбрать путь для экспорта</string>
+    <string name="backend_registration_succeeded">Регистрация успешна завершена</string>
+    <string name="backend_registration_failed">Ошибка регистрации на сервере приложения</string>
+    <string name="error">Ошибка</string>
 </resources>
