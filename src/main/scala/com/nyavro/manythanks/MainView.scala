@@ -1,7 +1,7 @@
 package com.nyavro.manythanks
 
 import android.content.{BroadcastReceiver, Context, Intent}
-import com.nyavro.manythanks.register.{BackendRegistration, RequestPhoneActivity}
+import com.nyavro.manythanks.register.{BackendRegistration, SMSRegistrationActivity}
 import org.scaloid.common._
 
 class MainView extends SActivity {

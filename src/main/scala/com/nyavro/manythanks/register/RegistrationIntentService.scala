@@ -12,7 +12,7 @@ import org.scaloid.common.Preferences
 
 class RegistrationIntentService extends IntentService(RegistrationIntentService.Tag) {
 
-  val preferences = new Preferences(PreferenceManager.getDefaultSharedPreferences(this))
+  lazy val preferences = new Preferences(PreferenceManager.getDefaultSharedPreferences(this))
   /**
    * Server API Key help
 AIzaSyDVV5tut_3_WCfBR4HgoQmcH-zN2_QIlrE

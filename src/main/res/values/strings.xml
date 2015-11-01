@@ -108,4 +108,8 @@
     <string name="backend_registration_succeeded">Регистрация успешна завершена</string>
     <string name="backend_registration_failed">Ошибка регистрации на сервере приложения</string>
     <string name="error">Ошибка</string>
+    <string name="sms_registration_failed">Ошибка CМС регистрации</string>
+    <string name="invalid_registration_message">Неверный код СМС регистрации. Попробуйте повторить регистрацию</string>
+    <string name="registering_sms_title">СМС регистрация</string>
+    <string name="registering_sms_message">Пожалуйста, подождите окончания СМС регистрации</string>
 </resources>
