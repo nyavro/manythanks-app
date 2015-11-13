@@ -1,4 +1,4 @@
-package com.nyavro.manythanks.register
+package com.nyavro.manythanks.sms.validation
 
 class RegistrationMessage(phone:String, registrationId:Long) {
 

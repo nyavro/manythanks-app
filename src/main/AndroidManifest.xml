@@ -13,7 +13,7 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".register.SMSRegistrationActivity"/>
+		<activity android:name=".register.RegistrationActivity"/>
 		<receiver
 				android:name="com.google.android.gms.gcm.GcmReceiver"
 				android:exported="true"
@@ -23,7 +23,7 @@
 				<category android:name="com.nyavro.manythanks" />
 			</intent-filter>
 		</receiver>
-		<!--<receiver android:name=".register.SmsRegistrationReciever">-->
+		<!--<receiver android:name=".register.sms.validation.ExclusiveSMS">-->
 			<!--<intent-filter>-->
 				<!--<action android:name="android.provider.Telephony.SMS_RECEIVED" />-->
 			<!--</intent-filter>-->
@@ -41,7 +41,7 @@
 		<!-- [END gcm_listener] -->
 		<!-- [START instanceId_listener] -->
 		<service
-				android:name="com.nyavro.manythanks.MyInstanceIDListenerService"
+				android:name="com.nyavro.manythanks.LocalInstanceIDListenerService"
 				android:exported="false">
 			<intent-filter>
 				<action android:name="com.google.android.gms.iid.InstanceID"/>
@@ -49,7 +49,11 @@
 		</service>
 		<!-- [END instanceId_listener] -->
 		<service
-				android:name=".register.RegistrationIntentService"
+				android:name=".register.RegistrationService"
+				android:exported="false">
+		</service>
+		<service
+				android:name=".sms.validation.SMSVerificationService"
 				android:exported="false">
 		</service>
 	</application>
