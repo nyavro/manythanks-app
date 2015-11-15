@@ -1,7 +1,6 @@
 package com.nyavro.manythanks
 
 import android.content.{BroadcastReceiver, Context, Intent}
-import com.nyavro.manythanks.register.RegistrationActivity
 import org.scaloid.common._
 
 class MainView extends SActivity {
@@ -33,16 +32,16 @@ class MainView extends SActivity {
     sendSms.setText("Full sms registration")
     sendSms.onClick {
 //      if(!preferences.isRegistered(false)) {
-        startActivity(new Intent(MainView.this, classOf[RegistrationActivity]))
+//        startActivity(new Intent(MainView.this, classOf[RegistrationActivity]))
 //      }
     }
 
-    register.setText("Register")
+    register.setText("List")
     register.onClick {
-//      new BackendRegistration(preferences).register("gcm_dummy_token", preferences.phone(""))
+      val intent = new Intent()
+      intent.start[ContactsView]
     }
     number.setText(preferences.phone(""))
     setContentView(new SVerticalLayout += message += send += number += sendSms += register)
   }
-
 }
