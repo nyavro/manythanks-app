@@ -27,22 +27,32 @@ class ContactsView extends SActivity {
   }
 
   def contacts() = {
-    val projection = Array(Contacts.DISPLAY_NAME)
-    val cur = getContentResolver.query(Contacts.CONTENT_URI, projection, null, null, null)
-    val index = cur.getColumnIndex(Contacts.DISPLAY_NAME)
-    cur.moveToFirst()
+    val projection = Array(Contacts.DISPLAY_NAME, Contacts.NUMBER)
+    val cur = getContentResolver.query(Contacts.CONTENT_URI, null, null, null, null)
+    val nameIndex = cur.getColumnIndex(Contacts.DISPLAY_NAME)
+    val idIndex = cur.getColumnIndex(Contacts.NUMBER)
+
     toList(cur) {
-      cur => cur.getString(index)
+      cur => {
+        cur.getString(nameIndex) + " " + cur.getString(idIndex)
+      }
     }
   }
 
-  @tailrec
-  private def toList[A](cursor: Cursor, acc:List[A] = Nil)(convert: Cursor => A): List[A] = {
-    if (cursor.isAfterLast) acc
-    else {
-      val item = convert(cursor)
-      cursor.moveToNext
-      toList(cursor, item::acc)(convert)
-    }
+
+  private def toList[A](cursor: Cursor)(convert: Cursor => A): List[A] = {
+    @tailrec
+    def toList(acc:List[A] = Nil): List[A] =
+      if (cursor.isAfterLast) {
+        cursor.close()
+        acc
+      }
+      else {
+        val item = convert(cursor)
+        cursor.moveToNext
+        toList(item :: acc)
+      }
+    cursor.moveToFirst()
+    toList()
   }
 }

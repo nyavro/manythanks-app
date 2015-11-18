@@ -23,6 +23,7 @@ class RegistrationService extends IntentService(RegistrationService.Tag) {
       .orElse(Some(preferences.phone(""))) match {
       case Some("") => sendResult(Some("No phone for registration provided"))
       case Some(phone) => register(phone)
+      case _ => sendResult(Some("No phone for registration provided"))
     }
   }
 

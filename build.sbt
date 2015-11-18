@@ -40,8 +40,10 @@ libraryDependencies ++= Seq(
 //  "com.netflix.rxjava" % "rxjava-android" % "latest.integration" intransitive(),
   "io.reactivex" % "rxscala_2.11" % "0.25.0",
   "io.reactivex" % "rxandroid" % "1.0.1",
-  "org.scalatest"      % "scalatest_2.11"                            % ScalatestVersion  % "test",
-  "org.scalamock"      % "scalamock-scalatest-support_2.11"          % ScalamockVersion % "test"
+  "org.scalatest" % "scalatest_2.11"                            % ScalatestVersion % "test",
+  "org.scalamock" % "scalamock-scalatest-support_2.11"          % ScalamockVersion % "test",
+  "org.robolectric" % "robolectric" % "3.0" % "test",
+  "junit" % "junit" % "4.12" % "test"
 )
 
 // Override the run task with the android:run
