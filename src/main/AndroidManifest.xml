@@ -13,7 +13,7 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name="com.nyavro.manythanks.ContactsView"/>
+		<activity android:name=".contacts.ContactsView"/>
 		<activity android:name=".register.RegistrationActivity"/>
 		<receiver
 				android:name="com.google.android.gms.gcm.GcmReceiver"

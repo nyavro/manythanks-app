@@ -1,6 +1,7 @@
 package com.nyavro.manythanks
 
 import android.content.{BroadcastReceiver, Context, Intent}
+import com.nyavro.manythanks.contacts.ContactsView
 import org.scaloid.common._
 
 class MainView extends SActivity {
@@ -36,7 +37,7 @@ class MainView extends SActivity {
 //      }
     }
 
-    register.setText("List")
+    register.setText("List111")
     register.onClick {
       val intent = new Intent()
       intent.start[ContactsView]

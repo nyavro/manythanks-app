@@ -1,7 +1,9 @@
-package com.nyavro.manythanks
+package com.nyavro.manythanks.contacts
 
 import android.database.Cursor
+import android.util.Log
 import android.widget.ArrayAdapter
+import com.nyavro.manythanks.Contacts
 import org.scaloid.common._
 import rx.android.schedulers.AndroidSchedulers
 import rx.lang.scala.JavaConversions._
@@ -28,24 +30,45 @@ class ContactsView extends SActivity {
     setContentView(new SVerticalLayout += list)
     adapter.setNotifyOnChange(true)
     Observable.create {
-      (observer: Observer[(String, List[String])]) => {
-        contacts().foreach {
-          case (id, name) => observer.onNext(name, phones(id))
-        }
+      (observer: Observer[Contact]) => {
+        val globalIds = (new ContactsService).globalIds(List("1","2","3"))
+        globalIds.foreach(item => observer.onNext(item))
         Subscription()
       }
     }
       .observeOn(AndroidSchedulers.mainThread())
       .subscribeOn(Schedulers.io())
       .subscribe(
-        res => {
-          adapter.add(res._1 + res._2.mkString(";"))
-        }
-      )
+      res => {
+        Log.i(Tag, res.phone)
+      }
+    )
+//    Observable.create {
+//      (observer: Observer[(String, List[String])]) => {
+//        contacts().map {
+//          case (id, name) => observer.onNext(name, phones(id))
+//        }
+//        Subscription()
+//      }
+//    }
+//      .observeOn(AndroidSchedulers.mainThread())
+//      .subscribeOn(Schedulers.io())
+//      .subscribe(
+//        res => {
+//          adapter.add(res._1 + res._2.mkString(";"))
+//        }
+//      )
+//    val localIds:Map[String, String] = (
+//      for (
+//        (id, name) <- contacts();
+//        phone <- phones(id)
+//      ) yield phone -> id
+//    ).toMap
+//    val globalIds = (new ContactsService).globalIds(localIds.keys).map(item => item.phone -> item.id)
   }
 
   def contacts() = {
-    val cur = getContentResolver.query(Contacts.CONTENT_URI, null, null, null, null)
+    val cur = getContentResolver.query(Contacts.CONTENT_URI, null, null, null, s"${Contacts.DISPLAY_NAME} ASC")
     val nameIndex = cur.getColumnIndex(Contacts.DISPLAY_NAME)
     val idIndex = cur.getColumnIndex(Contacts.ID)
     val hasPhoneIndex = cur.getColumnIndex(Contacts.HAS_PHONE_NUMBER)
