@@ -1,6 +1,7 @@
 package com.nyavro.manythanks.contacts
 
 import android.database.Cursor
+import android.util.Log
 import com.nyavro.manythanks.{Contacts, R}
 import org.scaloid.common._
 import rx.android.schedulers.AndroidSchedulers
@@ -25,26 +26,36 @@ class ContactsView extends SActivity {
     setContentView(new SVerticalLayout += list)
     adapter.setNotifyOnChange(true)
     Observable.create {
-      (observer: Observer[DisplayContact]) => {
-        displayContacts().foreach (item => {
-            Thread.sleep(10)
-            observer.onNext(item)
-          }
+      (observer: Observer[List[DisplayContact]]) => {
+        contacts().grouped(20).foreach (items =>
+          observer.onNext(items.map(item => DisplayContact(item._2, List())))
         )
+        observer.onCompleted()
         Subscription()
       }
     }
       .observeOn(AndroidSchedulers.mainThread())
       .subscribeOn(Schedulers.io())
+      .onBackpressureBuffer
       .subscribe(
-        item => adapter.add(item)
+        items => adapter.addAll(items:_*),
+        throwable => {
+          toast(getString(R.string.error_loading_contacts))
+          Log.e(Tag, throwable.getMessage)
+        },
+        () => {
+          toast("Complete contacts loading")
+        }
       )
+
   }
 
   def displayContacts():List[DisplayContact] = {
-    val name2phones = contacts().map {case (id, name) => (name, phones(id))}.toMap
-    val localIds = name2phones.values.flatten
-    val globalIds = new ContactsService(localIds).globalIds().map(item => item.phone -> item).toMap
+    val name2phones = contacts().map {case (id, name) => (name, phones(id))}
+    val globalIds = new ContactsService(name2phones.map(_._2).flatten)
+      .globalIds()
+      .map(item => item.phone -> item)
+      .toMap
     name2phones
       .map {
         case (name, lst) => DisplayContact(name, lst.map(phone => globalIds.get(phone)).flatten)
@@ -52,7 +63,7 @@ class ContactsView extends SActivity {
   }
 
   def contacts() = {
-    val cur = getContentResolver.query(Contacts.CONTENT_URI, null, null, null, s"${Contacts.DISPLAY_NAME} ASC")
+    val cur = getContentResolver.query(Contacts.CONTENT_URI, null, null, null, s"${Contacts.DISPLAY_NAME} DESC")
     val nameIndex = cur.getColumnIndex(Contacts.DISPLAY_NAME)
     val idIndex = cur.getColumnIndex(Contacts.ID)
     val hasPhoneIndex = cur.getColumnIndex(Contacts.HAS_PHONE_NUMBER)

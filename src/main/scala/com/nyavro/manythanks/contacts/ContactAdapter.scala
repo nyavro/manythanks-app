@@ -20,11 +20,9 @@ class ContactAdapter(resource:Int)(implicit context: android.content.Context) ex
     val view = ensureView(v, parent)
     val hasContact = view.findViewById(R.id.has_contact).asInstanceOf[CheckBox]
     val displayName = view.findViewById(R.id.display_name).asInstanceOf[TextView]
-//    if(position <  items.length) {
     val contact = getItem(position)
     hasContact.setChecked(contact.contacts.nonEmpty)
     displayName.setText(contact.name)
-//    }
     view
   }
 
