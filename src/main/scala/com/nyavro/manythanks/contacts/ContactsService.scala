@@ -9,7 +9,7 @@ case class UserToken(userId:Long, token:String)
 /**
  * Requests global ids of contacts by phone
  */
-class ContactsService extends DefaultJsonProtocol with CollectionFormats {
+class ContactsService(phones:Iterable[String]) extends DefaultJsonProtocol with CollectionFormats {
 
   private val BackendURL = "http://192.168.0.17:9000/v1/contact/list"
 
@@ -27,7 +27,7 @@ class ContactsService extends DefaultJsonProtocol with CollectionFormats {
    * Sends request
    * @return Registered UserToken
    */
-  def globalIds(phones:Iterable[String]):List[Contact] = {
+  def globalIds():List[Contact] = {
     Log.i(Tag, "Requesting global ids")
     val form = format(phones)
     Log.i(Tag, form)
@@ -40,4 +40,6 @@ class ContactsService extends DefaultJsonProtocol with CollectionFormats {
       .parseJson
     json.convertTo[Res].list
   }
+
+
 }

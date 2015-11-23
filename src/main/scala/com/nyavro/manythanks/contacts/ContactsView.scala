@@ -1,9 +1,7 @@
 package com.nyavro.manythanks.contacts
 
 import android.database.Cursor
-import android.util.Log
-import android.widget.ArrayAdapter
-import com.nyavro.manythanks.Contacts
+import com.nyavro.manythanks.{Contacts, R}
 import org.scaloid.common._
 import rx.android.schedulers.AndroidSchedulers
 import rx.lang.scala.JavaConversions._
@@ -20,51 +18,37 @@ class ContactsView extends SActivity {
 
   lazy val list = new SListView
 
-  lazy val adapter = new ArrayAdapter[String](
-    this,
-    android.R.layout.simple_list_item_1
-  )
+  lazy val adapter = new ContactAdapter(R.layout.contact_list_item)
 
   onCreate {
     list.setAdapter(adapter)
     setContentView(new SVerticalLayout += list)
     adapter.setNotifyOnChange(true)
     Observable.create {
-      (observer: Observer[Contact]) => {
-        val globalIds = (new ContactsService).globalIds(List("1","2","3"))
-        globalIds.foreach(item => observer.onNext(item))
+      (observer: Observer[DisplayContact]) => {
+        displayContacts().foreach (item => {
+            Thread.sleep(10)
+            observer.onNext(item)
+          }
+        )
         Subscription()
       }
     }
       .observeOn(AndroidSchedulers.mainThread())
       .subscribeOn(Schedulers.io())
       .subscribe(
-      res => {
-        Log.i(Tag, res.phone)
-      }
-    )
-//    Observable.create {
-//      (observer: Observer[(String, List[String])]) => {
-//        contacts().map {
-//          case (id, name) => observer.onNext(name, phones(id))
-//        }
-//        Subscription()
-//      }
-//    }
-//      .observeOn(AndroidSchedulers.mainThread())
-//      .subscribeOn(Schedulers.io())
-//      .subscribe(
-//        res => {
-//          adapter.add(res._1 + res._2.mkString(";"))
-//        }
-//      )
-//    val localIds:Map[String, String] = (
-//      for (
-//        (id, name) <- contacts();
-//        phone <- phones(id)
-//      ) yield phone -> id
-//    ).toMap
-//    val globalIds = (new ContactsService).globalIds(localIds.keys).map(item => item.phone -> item.id)
+        item => adapter.add(item)
+      )
+  }
+
+  def displayContacts():List[DisplayContact] = {
+    val name2phones = contacts().map {case (id, name) => (name, phones(id))}.toMap
+    val localIds = name2phones.values.flatten
+    val globalIds = new ContactsService(localIds).globalIds().map(item => item.phone -> item).toMap
+    name2phones
+      .map {
+        case (name, lst) => DisplayContact(name, lst.map(phone => globalIds.get(phone)).flatten)
+      }.toList
   }
 
   def contacts() = {
