@@ -112,4 +112,5 @@
     <string name="registering_sms_title">СМС регистрация</string>
     <string name="registering_sms_message">Пожалуйста, подождите окончания СМС регистрации</string>
     <string name="error_loading_contacts">Ошибка загрузки контактов</string>
+    <string name="send_message_error">Ошибка отправки сообщения</string>
 </resources>

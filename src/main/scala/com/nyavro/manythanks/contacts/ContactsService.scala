@@ -40,6 +40,4 @@ class ContactsService(phones:Iterable[String]) extends DefaultJsonProtocol with 
       .parseJson
     json.convertTo[Res].list
   }
-
-
 }

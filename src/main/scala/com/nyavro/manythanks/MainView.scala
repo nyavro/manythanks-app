@@ -37,7 +37,7 @@ class MainView extends SActivity {
 //      }
     }
 
-    register.setText("List111")
+    register.setText("List")
     register.onClick {
       val intent = new Intent()
       intent.start[ContactsView]

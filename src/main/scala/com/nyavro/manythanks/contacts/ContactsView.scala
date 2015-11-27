@@ -1,7 +1,6 @@
 package com.nyavro.manythanks.contacts
 
 import android.database.Cursor
-import android.util.Log
 import com.nyavro.manythanks.{Contacts, R}
 import org.scaloid.common._
 import rx.android.schedulers.AndroidSchedulers
@@ -23,13 +22,11 @@ class ContactsView extends SActivity {
 
   onCreate {
     list.setAdapter(adapter)
-    setContentView(new SVerticalLayout += list)
     adapter.setNotifyOnChange(true)
+    setContentView(new SVerticalLayout += list)
     Observable.create {
       (observer: Observer[List[DisplayContact]]) => {
-        contacts().grouped(20).foreach (items =>
-          observer.onNext(items.map(item => DisplayContact(item._2, List())))
-        )
+        displayContacts().grouped(20).foreach(observer.onNext)
         observer.onCompleted()
         Subscription()
       }
@@ -41,13 +38,10 @@ class ContactsView extends SActivity {
         items => adapter.addAll(items:_*),
         throwable => {
           toast(getString(R.string.error_loading_contacts))
-          Log.e(Tag, throwable.getMessage)
+          error(throwable.getMessage)
         },
-        () => {
-          toast("Complete contacts loading")
-        }
+        () => {}
       )
-
   }
 
   def displayContacts():List[DisplayContact] = {

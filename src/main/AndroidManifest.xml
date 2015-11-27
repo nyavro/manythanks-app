@@ -14,6 +14,7 @@
 			</intent-filter>
 		</activity>
 		<activity android:name=".contacts.ContactsView"/>
+		<activity android:name=".messaging.SendMessageView"/>
 		<activity android:name=".register.RegistrationActivity"/>
 		<receiver
 				android:name="com.google.android.gms.gcm.GcmReceiver"
