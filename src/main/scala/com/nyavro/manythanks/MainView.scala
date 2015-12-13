@@ -23,13 +23,15 @@ class MainView extends SActivity {
 
   lazy val number = new SEditText
   lazy val register = new SButton
+  lazy val token = new STextView
 
   onCreate {
     message.setText("{empty}")
     send.setText("Send")
     send.onClick {
     }
-
+    token.setText(preferences.gcmToken("not found"))
+    info(preferences.gcmToken("not found"))
     sendSms.setText("Full sms registration")
     sendSms.onClick {
 //      if(!preferences.isRegistered(false)) {
@@ -43,6 +45,6 @@ class MainView extends SActivity {
       intent.start[ContactsView]
     }
     number.setText(preferences.phone(""))
-    setContentView(new SVerticalLayout += message += send += number += sendSms += register)
+    setContentView(new SVerticalLayout += message += send += number += sendSms += register += token)
   }
 }

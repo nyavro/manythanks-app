@@ -1,9 +1,11 @@
 package com.nyavro.manythanks.register
 
 import android.content.Context
+import android.preference.PreferenceManager
 import android.util.Log
 import com.google.android.gms.gcm.{GcmPubSub, GoogleCloudMessaging}
 import com.google.android.gms.iid.InstanceID
+import org.scaloid.common._
 
 /**
  * Performs GCM Registration
@@ -13,6 +15,8 @@ class GcmRegistration(senderId:String, ctx:Context) extends Registration[String]
   private val Topics = Array("global")
 
   private val Tag = "GcmRegistration"
+
+  private lazy val preferences = new Preferences(PreferenceManager.getDefaultSharedPreferences(ctx))
   /**
    * Requests token at GCM
    * @return
@@ -27,6 +31,7 @@ class GcmRegistration(senderId:String, ctx:Context) extends Registration[String]
         null
       )
     Log.i(Tag, s"GCM token: $gcmToken")
+    preferences.gcmToken = gcmToken
     subscribeTopics(gcmToken)
     gcmToken
   }
